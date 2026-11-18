@@ -74,6 +74,8 @@
   .card .actions a:hover{background:var(--accent);color:var(--bg)}
   .card .actions a.ghost{border-color:var(--line);color:var(--muted)}
   .card .actions a.ghost:hover{background:var(--panel-2);color:var(--text)}
+  .byline{font:600 11.5px var(--mono);color:var(--muted);margin:14px 0 0;padding-top:10px;border-top:1px solid var(--line)}
+  .byline b{color:var(--accent-2);font-weight:600}
   .empty{color:var(--muted);font-family:var(--mono)}
 
   footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);font-size:13px}
@@ -124,7 +126,12 @@
 </footer>
 
 <script>
+const AUTHOR = "manasa";
 const WRITEUPS = [
+  { name:"Monteverde", platform:"Hack The Box", os:"Windows", difficulty:"Medium", file:"monteverde.pdf",
+    summary:"Azure AD Connect box: password spraying finds a service account, a world-readable share leaks an Azure XML password, and ADSync credential recovery yields Domain Admin.",
+    chain:["Anonymous RPC enumerates users & Azure Admins group","Password spray → SABatchJobs : SABatchJobs","Readable users$ share leaks azure.xml password","Password reuse → WinRM shell as mhope","Azure AD Connect ADSync credential dump → Administrator"],
+    tags:["active-directory","azure-ad-connect","password-spray","adsync","winrm"] },
   { name:"Intentions", platform:"Hack The Box", os:"Linux", difficulty:"Hard", file:"intentions.pdf",
     summary:"Image-gallery web app compromised through second-order SQL injection, hash-based login abuse and an ImageMagick MSL file write.",
     chain:["Second-order SQLi via sqlmap --second-url","Login API v2 accepts bcrypt hashes → admin","Imagick MSL arbitrary file write → web shell","Old .git commit leaks developer password","Privileged scanner debug flag leaks root SSH key"],
@@ -187,7 +194,7 @@ const WRITEUPS = [
     tags:["sqli","xss","csrf","burp","waf-bypass"] },
 ];
 
-const SKILLS = ["Nmap","Burp Suite","Caido","sqlmap","gobuster / dirsearch","wfuzz / Hydra","Impacket","BloodHound","Evil-WinRM","Hashcat / John","linpeas","Kerberoasting","AS-REP Roasting","DCSync / Pass-the-Hash","GPP abuse","SQL Injection","LFI / PHP filter chains","SSRF","File upload bypass","CVE exploitation","PATH / library hijacking","SUID & capabilities","Report writing"];
+const SKILLS = ["Nmap","Burp Suite","Caido","sqlmap","gobuster / dirsearch","wfuzz / Hydra","Impacket","BloodHound","Evil-WinRM","Hashcat / John","linpeas","Kerberoasting","AS-REP Roasting","DCSync / Pass-the-Hash","GPP abuse","Password spraying","Azure AD Connect","SQL Injection","LFI / PHP filter chains","SSRF","File upload bypass","CVE exploitation","PATH / library hijacking","SUID & capabilities","Report writing"];
 
 const OS_ICON = { Linux:"🐧", Windows:"🪟", Web:"🌐" };
 const $ = s => document.querySelector(s);
@@ -241,6 +248,7 @@ function render(){
         <a href="writeups/${esc(w.file)}" target="_blank" rel="noopener">Read write-up →</a>
         <a class="ghost" href="writeups/${esc(w.file)}" download>PDF</a>
       </div>
+      <p class="byline">Author: <b>${esc(AUTHOR)}</b></p>
     </article>`).join("");
 }
 render();
