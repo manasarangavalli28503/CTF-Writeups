@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security Write-ups | manasarangavalli28503</title>
+<meta name="description" content="Penetration testing and CTF write-ups: Hack The Box, TryHackMe and web security labs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0f14; --panel:#121820; --panel-2:#17202b; --line:#233041;
+    --text:#d9e2ec; --muted:#8798aa; --accent:#3ddc97; --accent-2:#5ab0ff;
+    --easy:#3ddc97; --medium:#f5b748; --hard:#ff6b6b;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 var(--sans)}
+  a{color:inherit}
+  .wrap{max-width:1120px;margin:0 auto;padding-inline:20px}
+
+  header.hero{padding-block:72px 40px;border-bottom:1px solid var(--line);
+    background:radial-gradient(900px 300px at 10% 0%,rgba(61,220,151,.08),transparent 70%)}
+  .prompt{font:600 13px var(--mono);color:var(--accent);margin:0 0 14px}
+  .prompt .cursor{display:inline-block;width:8px;height:15px;background:var(--accent);vertical-align:-2px;margin-left:4px;animation:blink 1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  h1{font-size:clamp(30px,5vw,46px);line-height:1.15;margin:0 0 14px;letter-spacing:-.02em}
+  .lede{color:var(--muted);max-width:640px;margin:0 0 28px;font-size:16px}
+  .links{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{font:600 13px var(--mono);text-decoration:none;padding:9px 14px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:40px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .stat b{display:block;font:600 26px var(--mono);color:var(--accent)}
+  .stat span{color:var(--muted);font-size:13px}
+
+  section{padding-block:44px}
+  h2{font-size:22px;margin:0 0 6px}
+  .sub{color:var(--muted);margin:0 0 22px}
+
+  .skills{display:flex;flex-wrap:wrap;gap:8px}
+  .skill{font:12.5px var(--mono);padding:5px 10px;border-radius:999px;background:var(--panel-2);border:1px solid var(--line);color:var(--text)}
+
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:22px}
+  .filters{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font:600 12.5px var(--mono);cursor:pointer;padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--muted)}
+  .chip[aria-pressed="true"]{color:var(--bg);background:var(--accent);border-color:var(--accent)}
+  .search{flex:1;min-width:200px;font:14px var(--mono);padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--text)}
+  .search:focus{outline:none;border-color:var(--accent-2)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+  .card{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;transition:border-color .15s,transform .15s}
+  .card:hover{border-color:#35506b;transform:translateY(-2px)}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+  .card h3{margin:0;font-size:18px}
+  .meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .tag{font:600 11px var(--mono);padding:3px 8px;border-radius:6px;background:var(--panel-2);border:1px solid var(--line);color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+  .tag.Easy{color:var(--easy);border-color:rgba(61,220,151,.35)}
+  .tag.Medium{color:var(--medium);border-color:rgba(245,183,72,.35)}
+  .tag.Hard{color:var(--hard);border-color:rgba(255,107,107,.35)}
+  .os{font-size:20px;line-height:1}
+  .card p{color:var(--muted);margin:0 0 14px;font-size:14px}
+  .chain{list-style:none;margin:0 0 16px;padding:0;font:12.5px/1.5 var(--mono)}
+  .chain li{position:relative;padding-left:18px;margin-bottom:4px;color:var(--text)}
+  .chain li::before{content:"›";position:absolute;left:4px;color:var(--accent)}
+  .tech{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+  .tech span{font:11.5px var(--mono);color:var(--accent-2)}
+  .tech span::before{content:"#"}
+  .card .actions{margin-top:auto;display:flex;gap:8px}
+  .card .actions a{font:600 12.5px var(--mono);text-decoration:none;padding:8px 12px;border-radius:8px;border:1px solid var(--accent);color:var(--accent)}
+  .card .actions a:hover{background:var(--accent);color:var(--bg)}
+  .card .actions a.ghost{border-color:var(--line);color:var(--muted)}
+  .card .actions a.ghost:hover{background:var(--panel-2);color:var(--text)}
+  .empty{color:var(--muted);font-family:var(--mono)}
+
+  footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);font-size:13px}
+  @media (max-width:420px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="prompt">~/writeups $ cat README.md<span class="cursor"></span></p>
+    <h1>Offensive Security<br>Write-ups &amp; Reports</h1>
+    <p class="lede">Hands-on penetration testing walkthroughs from Hack The Box, TryHackMe and web-security labs:
+      Active Directory attacks, web exploitation, CVE weaponisation and Linux/Windows privilege escalation.</p>
+    <div class="links">
+      <a class="btn" href="#writeups">▸ Browse write-ups</a>
+      <a class="btn" href="https://github.com/manasarangavalli28503" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+      <h2>Skills demonstrated</h2>
+      <p class="sub">Techniques and tooling used across these engagements.</p>
+      <div class="skills" id="skills"></div>
+    </div>
+  </section>
+
+  <section id="writeups" style="padding-top:0">
+    <div class="wrap">
+      <h2>Write-ups</h2>
+      <p class="sub">Click any card to open the full PDF.</p>
+      <div class="toolbar">
+        <div class="filters" id="filters"></div>
+        <input class="search" id="search" type="search" placeholder="search: kerberoast, CVE, sqli…" aria-label="Search write-ups">
+      </div>
+      <div class="grid" id="grid"></div>
+      <p class="empty" id="empty" hidden>// no write-ups match</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">All write-ups cover retired / lab machines and are for educational purposes only.</div>
+</footer>
+
+<script>
+const WRITEUPS = [
+  { name:"Intentions", platform:"Hack The Box", os:"Linux", difficulty:"Hard", file:"intentions.pdf",
+    summary:"Image-gallery web app compromised through second-order SQL injection, hash-based login abuse and an ImageMagick MSL file write.",
+    chain:["Second-order SQLi via sqlmap --second-url","Login API v2 accepts bcrypt hashes → admin","Imagick MSL arbitrary file write → web shell","Old .git commit leaks developer password","Privileged scanner debug flag leaks root SSH key"],
+    tags:["sqli","sqlmap","imagick","git","burp"] },
+  { name:"Forest", platform:"Hack The Box", os:"Windows", difficulty:"Easy", file:"forest.pdf",
+    summary:"Domain Controller with Exchange installed. Anonymous RPC enumeration leads to AS-REP roasting and a DCSync via Exchange group ACLs.",
+    chain:["Anonymous RPC / LDAP user enumeration","AS-REP roast svc-alfresco","BloodHound: Account Operators → Exchange Windows Permissions","Grant DCSync with PowerView","secretsdump → Pass-the-Hash as Administrator"],
+    tags:["active-directory","kerberos","bloodhound","dcsync","impacket"] },
+  { name:"Sauna", platform:"Hack The Box", os:"Windows", difficulty:"Easy", file:"sauna.pdf",
+    summary:"Bank-themed DC. Staff names on the website become usernames for AS-REP roasting, then BloodHound reveals DCSync rights.",
+    chain:["LDAP / SMB / web enumeration","username-anarchy wordlist from staff names","AS-REP roast fsmith → Evil-WinRM","BloodHound: svc_loanmgr has replication rights","DCSync → psexec Pass-the-Hash as SYSTEM"],
+    tags:["active-directory","as-rep-roasting","bloodhound","dcsync","evil-winrm"] },
+  { name:"Active", platform:"Hack The Box", os:"Windows", difficulty:"Easy", file:"active.pdf",
+    summary:"Classic AD box: Group Policy Preferences passwords on an anonymous SMB share, then Kerberoasting the Administrator.",
+    chain:["Anonymous SMB → Replication share","GPP cpassword in Groups.xml decrypted","Kerberoast Administrator SPN","Hashcat cracks TGS hash","psexec → SYSTEM"],
+    tags:["active-directory","smb","gpp","kerberoasting","hashcat"] },
+  { name:"Outbound", platform:"Hack The Box", os:"Linux", difficulty:"Easy", file:"outbound.pdf",
+    summary:"Webmail portal exploited with a Roundcube CVE, then credential harvesting from a user's mailbox.",
+    chain:["Subdomain discovery → mail.outbound.htb","CVE-2025-49113 Roundcube RCE","MySQL creds → decoded user password","Mailbox loot → user flag","linpeas post-exploitation enumeration"],
+    tags:["cve","roundcube","webmail","linpeas"] },
+  { name:"Broker", platform:"Hack The Box", os:"Linux", difficulty:"Easy", file:"broker.pdf",
+    summary:"Apache ActiveMQ with default creds and a CVSS 10 deserialization RCE, rooted through a sudo nginx misconfiguration.",
+    chain:["Nmap → ActiveMQ 5.15.15","Default admin:admin console","CVE-2023-46604 OpenWire RCE","TTY upgrade","sudo nginx with custom root config → read /root"],
+    tags:["cve","activemq","sudo","nginx"] },
+  { name:"Sau", platform:"Hack The Box", os:"Linux", difficulty:"Easy", file:"sau.pdf",
+    summary:"SSRF in Request-Baskets chained into unauthenticated RCE in an internal Maltrail instance.",
+    chain:["Request-Baskets 1.2.1 SSRF (CVE-2023-27163)","Reach internal Maltrail 0.53","Maltrail OS command injection → shell as puma","sudo systemctl status → less pager escape"],
+    tags:["ssrf","cve","maltrail","gtfobins"] },
+  { name:"Busqueda", platform:"Hack The Box", os:"Linux", difficulty:"Easy", file:"busqueda.pdf",
+    summary:"Command injection in Searchor 2.4.0, credentials in a .git config, and a relative-path script hijack for root.",
+    chain:["Searchor 2.4.0 arbitrary command injection","Credentials leaked in .git/config","Gitea + SSH as svc","sudo system-checkup.py calls ./full-checkup.sh","Relative path hijack → root"],
+    tags:["command-injection","git","sudo","path-hijack"] },
+  { name:"Help", platform:"Hack The Box", os:"Linux", difficulty:"Easy", file:"help.pdf",
+    summary:"HelpDeskZ 1.0.2 unauthenticated file upload to a PHP reverse shell, then a kernel exploit for root.",
+    chain:["Directory brute force → /support","HelpDeskZ 1.0.2 upload bypass","Time-based filename prediction → PHP shell","linpeas → outdated kernel","Kernel exploit (EDB-44298) → root"],
+    tags:["file-upload","php","kernel-exploit","searchsploit"] },
+  { name:"Smol", platform:"TryHackMe", os:"Linux", difficulty:"Medium", file:"smol.pdf",
+    summary:"WordPress site with a vulnerable plugin and a planted backdoor, followed by multi-user lateral movement.",
+    chain:["wpscan → jsmol2wp plugin","LFI (CVE-2018-20463) reads wp-config.php","Backdoored hello.php → RCE","MySQL hashes cracked with John","Lateral moves via SSH keys & cracked zip → root"],
+    tags:["wordpress","lfi","backdoor","john","mysql"] },
+  { name:"Wonderland", platform:"TryHackMe", os:"Linux", difficulty:"Medium", file:"wonderland.pdf",
+    summary:"Alice-themed box chaining three different privilege-escalation tricks across four users.",
+    chain:["Recursive gobuster → /r/a/b/b/i/t","Hidden SSH creds for alice","Python library hijack (random.py) → rabbit","PATH hijack on SUID teaParty → hatter","perl cap_setuid capability → root"],
+    tags:["python-hijack","path-hijack","capabilities","gtfobins"] },
+  { name:"Cheese CTF", platform:"TryHackMe", os:"Linux", difficulty:"Easy", file:"cheese-ctf.pdf",
+    summary:"Login bypass and LFI turned into RCE with PHP filter chains, then a writable systemd timer and SUID xxd.",
+    chain:["Caido + dirsearch / gobuster / vhost fuzzing","LFI via php://filter","PHP filter chain generator → RCE","Writable authorized_keys → SSH as comte","systemd timer → SUID xxd reads root.txt"],
+    tags:["lfi","php-filter-chain","caido","systemd","suid"] },
+  { name:"Lookup", platform:"TryHackMe", os:"Linux", difficulty:"Easy", file:"lookup-pentest-report.pdf", report:true,
+    summary:"Written as a formal penetration test report: executive summary, risk-rated findings and remediation.",
+    chain:["Username enumeration with wfuzz","Hydra credential brute force","elFinder RCE (CVE-2019-9194)","PATH hijack on SUID pwm → think","sudo look → root"],
+    tags:["report","hydra","elfinder","path-hijack"] },
+  { name:"Pyrat", platform:"TryHackMe", os:"Linux", difficulty:"Easy", file:"pyrat.pdf",
+    summary:"A Python service that executes raw input, plus a custom socket fuzzer written to brute force the admin endpoint.",
+    chain:["Nmap → Python service on 8000","Python reverse shell via raw socket","Credential discovery → SSH as think","Custom Python brute-forcer for admin password","Root shell"],
+    tags:["python","scripting","reverse-shell"] },
+  { name:"SQLi, XSS & CSRF Labs", platform:"Web Security", os:"Web", difficulty:"Medium", file:"portswigger-sqli-xss-csrf.pdf",
+    summary:"Web security lab walkthroughs in Q&A format: WAF bypass and CSRF, with impact and mitigations.",
+    chain:["XML-encoded SQLi bypasses WAF (hex entities)","UNION-based credential extraction","Stored XSS to bypass CSRF protections","Auto-submitting CSRF PoC","Mitigations: tokens, SameSite cookies"],
+    tags:["sqli","xss","csrf","burp","waf-bypass"] },
+];
+
+const SKILLS = ["Nmap","Burp Suite","Caido","sqlmap","gobuster / dirsearch","wfuzz / Hydra","Impacket","BloodHound","Evil-WinRM","Hashcat / John","linpeas","Kerberoasting","AS-REP Roasting","DCSync / Pass-the-Hash","GPP abuse","SQL Injection","LFI / PHP filter chains","SSRF","File upload bypass","CVE exploitation","PATH / library hijacking","SUID & capabilities","Report writing"];
+
+const OS_ICON = { Linux:"🐧", Windows:"🪟", Web:"🌐" };
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+// stats
+const count = f => WRITEUPS.filter(f).length;
+$("#stats").innerHTML = [
+  [WRITEUPS.length, "write-ups"],
+  [count(w => w.platform === "Hack The Box"), "Hack The Box"],
+  [count(w => w.platform === "TryHackMe"), "TryHackMe"],
+  [count(w => w.os === "Windows"), "Active Directory"],
+].map(([n, l]) => `<div class="stat"><b>${n}</b><span>${l}</span></div>`).join("");
+
+$("#skills").innerHTML = SKILLS.map(s => `<span class="skill">${esc(s)}</span>`).join("");
+
+// filters
+const FILTERS = ["All","Hack The Box","TryHackMe","Web Security","Windows","Linux"];
+let active = "All";
+$("#filters").innerHTML = FILTERS.map(f => `<button class="chip" data-f="${esc(f)}" aria-pressed="${f === active}">${esc(f)}</button>`).join("");
+$("#filters").addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if (!b) return;
+  active = b.dataset.f;
+  document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.f === active));
+  render();
+});
+$("#search").addEventListener("input", render);
+
+function render(){
+  const q = $("#search").value.trim().toLowerCase();
+  const list = WRITEUPS.filter(w =>
+    (active === "All" || w.platform === active || w.os === active) &&
+    (!q || [w.name, w.platform, w.os, w.summary, ...w.chain, ...w.tags].join(" ").toLowerCase().includes(q))
+  );
+  $("#empty").hidden = list.length > 0;
+  $("#grid").innerHTML = list.map(w => `
+    <article class="card">
+      <div class="card-top">
+        <h3>${esc(w.name)}</h3><span class="os" title="${esc(w.os)}">${OS_ICON[w.os] || ""}</span>
+      </div>
+      <div class="meta">
+        <span class="tag">${esc(w.platform)}</span>
+        <span class="tag">${esc(w.os)}</span>
+        <span class="tag ${esc(w.difficulty)}">${esc(w.difficulty)}</span>
+        ${w.report ? '<span class="tag">Pentest report</span>' : ""}
+      </div>
+      <p>${esc(w.summary)}</p>
+      <ul class="chain">${w.chain.map(c => `<li>${esc(c)}</li>`).join("")}</ul>
+      <div class="tech">${w.tags.map(t => `<span>${esc(t)}</span>`).join("")}</div>
+      <div class="actions">
+        <a href="writeups/${esc(w.file)}" target="_blank" rel="noopener">Read write-up →</a>
+        <a class="ghost" href="writeups/${esc(w.file)}" download>PDF</a>
+      </div>
+    </article>`).join("");
+}
+render();
+</script>
+</body>
+</html>
