@@ -2,7 +2,7 @@
 
 Penetration testing and CTF write-ups covering Active Directory attacks, web exploitation, CVE weaponisation and Linux/Windows privilege escalation.
 
-**Live site:** https://manasarangavalli28503.github.io/security-writeups/
+**Live site:** https://manasarangavalli28503.github.io/CTF-Writeups/
 
 ## Write-ups
 
