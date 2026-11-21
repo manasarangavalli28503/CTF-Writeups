@@ -11,6 +11,7 @@ Penetration testing and CTF write-ups covering Active Directory attacks, web exp
 
 | Machine | Platform | OS | Difficulty | Key techniques | Author | PDF |
 |---|---|---|---|---|---|---|
+| Timelapse | Hack The Box | Windows | Easy | Anonymous SMB, zip2john/pfx2john cracking, WinRM cert auth, PS history creds, LAPS read → Admin | MANASA | [PDF](writeups/timelapse.pdf) |
 | Monteverde | Hack The Box | Windows | Medium | Password spray, readable SMB share, Azure XML creds, Azure AD Connect ADSync dump → DA | MANASA | [PDF](writeups/monteverde.pdf) |
 | Intentions | Hack The Box | Linux | Hard | Second-order SQLi, hash login abuse, Imagick MSL write, git history creds | MANASA | [PDF](writeups/intentions.pdf) |
 | Forest | Hack The Box | Windows | Easy | RPC enum, AS-REP roasting, BloodHound, Exchange ACL → DCSync | MANASA | [PDF](writeups/forest.pdf) |

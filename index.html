@@ -137,6 +137,10 @@
 <script>
 const AUTHOR = "MANASA";
 const WRITEUPS = [
+  { name:"Timelapse", platform:"Hack The Box", os:"Windows", difficulty:"Easy", file:"timelapse.pdf",
+    summary:"Anonymous SMB share leaks a password-protected WinRM backup; cracked PFX certificate gives a cert-based WinRM shell, and LAPS read rights hand over the Administrator password.",
+    chain:["Anonymous SMB → Shares/Dev/winrm_backup.zip","zip2john + John cracks the archive","pfx2john cracks legacyy_dev_auth.pfx → extract cert & key","Evil-WinRM certificate auth as legacyy","PowerShell history leaks svc_deploy creds","LAPS_Readers → Get-AdmPwdPassword → Administrator"],
+    tags:["active-directory","smb","pfx","john","laps","evil-winrm"] },
   { name:"Monteverde", platform:"Hack The Box", os:"Windows", difficulty:"Medium", file:"monteverde.pdf",
     summary:"Azure AD Connect box: password spraying finds a service account, a world-readable share leaks an Azure XML password, and ADSync credential recovery yields Domain Admin.",
     chain:["Anonymous RPC enumerates users & Azure Admins group","Password spray → SABatchJobs : SABatchJobs","Readable users$ share leaks azure.xml password","Password reuse → WinRM shell as mhope","Azure AD Connect ADSync credential dump → Administrator"],
@@ -203,7 +207,7 @@ const WRITEUPS = [
     tags:["sqli","xss","csrf","burp","waf-bypass"] },
 ];
 
-const SKILLS = ["Nmap","Burp Suite","Caido","sqlmap","gobuster / dirsearch","wfuzz / Hydra","Impacket","BloodHound","Evil-WinRM","Hashcat / John","linpeas","Kerberoasting","AS-REP Roasting","DCSync / Pass-the-Hash","GPP abuse","Password spraying","Azure AD Connect","SQL Injection","LFI / PHP filter chains","SSRF","File upload bypass","CVE exploitation","PATH / library hijacking","SUID & capabilities","Report writing"];
+const SKILLS = ["Nmap","Burp Suite","Caido","sqlmap","gobuster / dirsearch","wfuzz / Hydra","Impacket","BloodHound","Evil-WinRM","Hashcat / John","linpeas","Kerberoasting","AS-REP Roasting","DCSync / Pass-the-Hash","GPP abuse","Password spraying","Azure AD Connect","LAPS abuse","PFX / certificate auth","SQL Injection","LFI / PHP filter chains","SSRF","File upload bypass","CVE exploitation","PATH / library hijacking","SUID & capabilities","Report writing"];
 
 const OS_ICON = { Linux:"🐧", Windows:"🪟", Web:"🌐" };
 const $ = s => document.querySelector(s);
