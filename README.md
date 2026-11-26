@@ -11,6 +11,7 @@ Penetration testing and CTF write-ups covering Active Directory attacks, web exp
 
 | Machine | Platform | OS | Difficulty | Key techniques | Author | PDF |
 |---|---|---|---|---|---|---|
+| Mentor | Hack The Box | Linux | Medium | SNMP community brute force, FastAPI JWT, blind command injection, Docker → Postgres hash dump, password reuse, sudo sh → root | MANASA | [PDF](writeups/mentor.pdf) |
 | Return | Hack The Box | Windows | Easy | Printer panel LDAP creds captured via rogue listener, WinRM, Server Operators service binpath abuse → SYSTEM | MANASA | [PDF](writeups/return.pdf) |
 | Timelapse | Hack The Box | Windows | Easy | Anonymous SMB, zip2john/pfx2john cracking, WinRM cert auth, PS history creds, LAPS read → Admin | MANASA | [PDF](writeups/timelapse.pdf) |
 | Monteverde | Hack The Box | Windows | Medium | Password spray, readable SMB share, Azure XML creds, Azure AD Connect ADSync dump → DA | MANASA | [PDF](writeups/monteverde.pdf) |

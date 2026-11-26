@@ -137,6 +137,10 @@
 <script>
 const AUTHOR = "MANASA";
 const WRITEUPS = [
+  { name:"Mentor", platform:"Hack The Box", os:"Linux", difficulty:"Medium", file:"mentor.pdf",
+    summary:"Brute-forced SNMP community string leaks API credentials; an admin backup endpoint has blind command injection into a Docker container, default Postgres creds dump MD5 hashes for SSH, and a reused SNMPv3 passphrase leads to sudo /bin/sh as root.",
+    chain:["vhost fuzzing → FastAPI app on api.mentorquotes.htb","SNMP brute force → 'internal' community leaks james's password","JWT as james → /admin/backup blind command injection → container shell","Default postgres:postgres → asyncpg dump of MD5 hashes","hashcat cracks svc password → SSH","snmpd.conf SNMPv3 passphrase reused → su james → sudo /bin/sh → root"],
+    tags:["snmp","api","jwt","command-injection","docker","postgresql","password-reuse"] },
   { name:"Return", platform:"Hack The Box", os:"Windows", difficulty:"Easy", file:"return.pdf",
     summary:"A printer admin panel stores LDAP credentials; pointing it at a rogue LDAP listener leaks them, giving a WinRM shell, and Server Operators membership lets a service binpath be hijacked for SYSTEM.",
     chain:["Nmap → HTB Printer Admin Panel on 80, LDAP, WinRM","/settings.php server address → attacker IP","nc on 389 captures svc-printer LDAP creds","Evil-WinRM as svc-printer","Server Operators → sc.exe config VSS binpath to nc.exe","Restart VSS → SYSTEM reverse shell"],
@@ -211,7 +215,7 @@ const WRITEUPS = [
     tags:["sqli","xss","csrf","burp","waf-bypass"] },
 ];
 
-const SKILLS = ["Nmap","Burp Suite","Caido","sqlmap","gobuster / dirsearch","wfuzz / Hydra","Impacket","BloodHound","Evil-WinRM","Hashcat / John","linpeas","Kerberoasting","AS-REP Roasting","DCSync / Pass-the-Hash","GPP abuse","Password spraying","Azure AD Connect","LAPS abuse","PFX / certificate auth","Rogue LDAP credential capture","Server Operators service abuse","SQL Injection","LFI / PHP filter chains","SSRF","File upload bypass","CVE exploitation","PATH / library hijacking","SUID & capabilities","Report writing"];
+const SKILLS = ["Nmap","Burp Suite","Caido","sqlmap","gobuster / dirsearch","wfuzz / Hydra","Impacket","BloodHound","Evil-WinRM","Hashcat / John","linpeas","Kerberoasting","AS-REP Roasting","DCSync / Pass-the-Hash","GPP abuse","Password spraying","Azure AD Connect","LAPS abuse","PFX / certificate auth","Rogue LDAP credential capture","Server Operators service abuse","SQL Injection","Command injection","SNMP enumeration","API / JWT testing","Docker pivoting","LFI / PHP filter chains","SSRF","File upload bypass","CVE exploitation","PATH / library hijacking","SUID & capabilities","Report writing"];
 
 const OS_ICON = { Linux:"🐧", Windows:"🪟", Web:"🌐" };
 const $ = s => document.querySelector(s);
